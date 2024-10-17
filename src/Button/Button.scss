@@ -1,0 +1,67 @@
+@use '../assets/styles/variables' as *;
+
+// 按钮样式的基础配置
+$button-padding: 0.5rem 1rem;
+$button-radius: 4px;
+$button-transition: all 0.3s ease;
+
+// 颜色映射表，方便管理多种按钮类型
+$button-colors: (
+  primary: #4096ff,
+  warning: #faad14,
+  danger: #ff4d4f,
+  default: #d9d9d9,
+  disabled: #f5f5f5,
+);
+
+// Mixin: 基础按钮样式
+@mixin button-base {
+  font-family: $font-sans;
+  border: 1px solid;
+  border-radius: $button-radius;
+  cursor: pointer;
+  padding: $button-padding;
+  transition: $button-transition;
+  color: white;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+// Mixin: 不同类型按钮样式
+@mixin button-variant($type) {
+  background-color: map-get($button-colors, $type);
+  color: if($type == default, black, white);
+
+  &:hover:not(:disabled) {
+    background-color: darken(map-get($button-colors, $type), 10%) !important;
+  }
+}
+
+// 主按钮样式
+.button {
+  @include button-base;
+
+  // 类型化按钮样式
+  &.primary {
+    @include button-variant(primary);
+  }
+
+  &.warning {
+    @include button-variant(warning);
+  }
+
+  &.danger {
+    @include button-variant(danger);
+  }
+
+  &.default {
+    @include button-variant(default);
+  }
+
+  &:hover:not(:disabled) {
+    // 显示
+    border: blue dashed 1px;
+  }
+}
